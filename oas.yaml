@@ -1,0 +1,620 @@
+swagger: "2.0"
+host: data.cultureelerfgoed.nl
+basePath: /api/v1
+schemes:
+- https
+consumes:
+- "application/json"
+produces:
+- "application/hal+json"
+- "application/problem+json"
+info:
+  version: 1.0.0
+  title: Cultureel Erfgoed API
+  contact:
+    name: Kadaster
+    email: dimitri.vanhees@kadaster.nl
+    url: https://www.kadaster.nl
+tags:
+  - name: Rijksmonumenten
+    description: |
+      Rijksmonumenten.
+parameters:
+  contentType:
+    name: "Content-Type"
+    in: header
+    required: false
+    type: string
+    description: "Media type van het request"
+  contentCrs:
+    name: "Content-Crs"
+    in: header
+    required: false
+    type: string
+    description: "Coordinaatreferentiesysteem van de meegegeven geometrie"
+    default: "epsg:4258"
+    enum:
+    - "epsg:4258"
+    - "epsg:28992"
+  acceptCrs:
+    name: "Accept-Crs"
+    in: "header"
+    required: false
+    type: "string"
+    description: "Gewenste CRS van de coördinaten in de response"
+    default: "epsg:4258"
+    enum:
+    - "epsg:4258"
+    - "epsg:28992"
+  id:
+    name: id
+    in: path
+    description: "NEN3610ID: Identificatiecode"
+    required: true
+    type: string
+  page:
+    description: "Pagina nummer"
+    name: page
+    in: query
+    required: false
+    type: integer
+    minimum: 1
+    default: 1
+  limit:
+    name: pageSize
+    in: query
+    required: false
+    type: integer
+    enum: [10, 20, 50, 100]
+    default: 20
+paths:
+  /rijksmonumenten:
+    get:
+      tags:
+      - "Rijksmonumenten"
+      summary: "Zoeken op een of meer instanties van rijksmonument"
+      parameters:
+      - $ref: '#/parameters/acceptCrs'
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      responses:
+        200:
+          description: "OK."
+          schema:
+            required:
+            - "_embedded"
+            - "_links"
+            type: "object"
+            properties:
+              _embedded:
+                required:
+                - "rijksmonumenten"
+                type: "object"
+                properties:
+                  rijksmonumenten:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/Rijksmonument"
+              _links:
+                type: object
+                allOf:
+                - $ref: "#/definitions/CollectionLinks"
+          headers:
+            Content-Crs:
+              type: string
+              description: "Coordinaatreferentiesysteem van de meegegeven geometrie"
+              default: "epsg:4258"
+              enum:
+              - "epsg:4258"
+              - "epsg:28992"
+            X-Pagination-Page:
+              type: integer
+              description: "Nummer van de huidige pagina (paginanummering start bij 1)"
+            X-Pagination-Limit:
+              type: integer
+              description: "Aantal Objecten per pagina"
+            X-Total-Count:
+              type: integer
+              description: "Totaal aantal resultaten (max 10.000)"
+        401:
+          description: "Unauthorized. Je hebt waarschijnlijk geen geldige `X-Api-Key`\
+            \ header meegestuurd."
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden. Je hebt geen rechten om deze URL te benaderen."
+          schema:
+            $ref: "#/definitions/Error"
+        406:
+          description: "Not Acceptable. Je hebt waarschijnlijk een gewenst formaat\
+            \ met de `Accept` header verstuurd welke niet ondersteund wordt."
+          schema:
+            $ref: "#/definitions/Error"
+        503:
+          description: "Service Unavailable. Er vindt mogelijk (gepland) onderhoud\
+            \ of een storing plaats."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            Retry-After:
+              type: "string"
+              format: "date-time"
+              description: "Tijdstip waarop verwacht is dat de service weer beschikbaar zal zijn."
+              x-example: "Sun, 28 Nov 2017 16:41:41 GMT"
+  /rijksmonumenten/_zoek:
+    post:
+      tags:
+      - "Rijksmonumenten"
+      summary: "Zoeken binnen rijksmonumenten"
+      parameters:
+      - $ref: '#/parameters/contentType'
+      - $ref: '#/parameters/contentCrs'
+      - $ref: '#/parameters/acceptCrs'
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      - name: "body"
+        in: "body"
+        required: false
+        schema:
+          type: "object"
+          properties:
+            _geo:
+              type: "object"
+              properties:
+                intersects:
+                  description: |
+                    De manier van 'samenvallen' van de zoek-geometrie en de resultaat-geometrie, zie OGC specificaties
+                  $ref: "#/definitions/GeoJSON"
+                contains:
+                  description: |
+                    De manier van 'samenvallen' van de zoek-geometrie en de resultaat-geometrie, zie OGC specificaties
+                  $ref: "#/definitions/GeoJSON"
+                within:
+                  description: |
+                    De manier van 'samenvallen' van de zoek-geometrie en de resultaat-geometrie, zie OGC specificaties
+                  $ref: "#/definitions/GeoJSON"
+      responses:
+        200:
+          description: "OK."
+          schema:
+            required:
+            - "_embedded"
+            - "_links"
+            type: "object"
+            properties:
+              _embedded:
+                required:
+                - "rijksmonumenten"
+                type: "object"
+                properties:
+                  rijksmonumenten:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/Rijksmonument"
+              _links:
+                type: object
+                allOf:
+                - $ref: "#/definitions/CollectionLinks"
+          headers:
+            Content-Crs:
+              type: string
+              description: "Coordinaatreferentiesysteem van de meegegeven geometrie"
+              default: "epsg:4258"
+              enum:
+              - "epsg:4258"
+              - "epsg:28992"
+            X-Pagination-Page:
+              type: integer
+              description: "Nummer van de huidige pagina (paginanummering start bij 1)"
+            X-Pagination-Limit:
+              type: integer
+              description: "Aantal Objecten per pagina"
+            X-Total-Count:
+              type: integer
+              description: "Totaal aantal resultaten (max 10.000)"
+        401:
+          description: "Unauthorized. Je hebt waarschijnlijk geen geldige `X-Api-Key`\
+            \ header meegestuurd."
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden. Je hebt geen rechten om deze URL te benaderen."
+          schema:
+            $ref: "#/definitions/Error"
+        406:
+          description: "Not Acceptable. Je hebt waarschijnlijk een gewenst formaat\
+            \ met de `Accept` header verstuurd welke niet ondersteund wordt."
+          schema:
+            $ref: "#/definitions/Error"
+        503:
+          description: "Service Unavailable. Er vindt mogelijk (gepland) onderhoud\
+            \ of een storing plaats."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            Retry-After:
+              type: "string"
+              format: "date-time"
+              description: "Tijdstip waarop verwacht is dat de service weer beschikbaar zal zijn."
+              x-example: "Sun, 28 Nov 2017 16:41:41 GMT"
+  /rijksmonumenten/{id}:
+    get:
+      tags:
+      - "Rijksmonumenten"
+      summary: "Een enkele instantie van rijksmonument opvragen"
+      parameters:
+      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/acceptCrs'
+      responses:
+        200:
+          description: "OK."
+          schema:
+            $ref: "#/definitions/Rijksmonument"
+          headers:
+            Content-Crs:
+              type: string
+              description: "Coordinaatreferentiesysteem van de meegegeven geometrie"
+              default: "epsg:4258"
+              enum:
+              - "epsg:4258"
+              - "epsg:28992"
+        401:
+          description: "Unauthorized. Je hebt waarschijnlijk geen geldige `X-Api-Key`\
+            \ header meegestuurd."
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden. Je hebt geen rechten om deze URL te benaderen."
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found. De resource kan niet gevonden worden."
+          schema:
+            $ref: "#/definitions/Error"
+        406:
+          description: "Not Acceptable. Je hebt waarschijnlijk een gewenst formaat\
+            \ met de `Accept` header verstuurd welke niet ondersteund wordt."
+          schema:
+            $ref: "#/definitions/Error"
+        503:
+          description: "Service Unavailable. Er vindt mogelijk (gepland) onderhoud\
+            \ of een storing plaats."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            Retry-After:
+              type: "string"
+              format: "date-time"
+              description: "Tijdstip waarop verwacht is dat de service weer beschikbaar zal zijn."
+              x-example: "Sun, 28 Nov 2017 16:41:41 GMT"
+  /percelen:
+    get:
+      tags:
+      - "Percelen"
+      summary: Zoeken op een of meer instanties van perceel.
+      parameters:
+      - $ref: '#/parameters/page'
+      - $ref: '#/parameters/limit'
+      responses:
+        200:
+          description: "OK."
+          schema:
+            required:
+            - "_embedded"
+            - "_links"
+            type: "object"
+            properties:
+              _embedded:
+                required:
+                - "percelen"
+                type: "object"
+                properties:
+                  percelen:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/Perceel"
+              _links:
+                type: object
+                x-type: collection-links
+                allOf:
+                - $ref: "#/definitions/CollectionLinks"
+          headers:
+            Content-Crs:
+              type: string
+              description: "Coordinaatreferentiesysteem van de meegegeven geometrie"
+              default: "epsg:4258"
+              enum:
+              - "epsg:4258"
+              - "epsg:28992"
+            X-Pagination-Page:
+              type: integer
+              description: "Nummer van de huidige pagina (paginanummering start bij 1)"
+            X-Pagination-Limit:
+              type: integer
+              description: "Aantal Objecten per pagina"
+            X-Total-Count:
+              type: integer
+              description: "Totaal aantal resultaten (max 10.000)"
+        401:
+          description: "Unauthorized. Je hebt waarschijnlijk geen geldige `X-Api-Key`\
+            \ header meegestuurd."
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden. Je hebt geen rechten om deze URL te benaderen."
+          schema:
+            $ref: "#/definitions/Error"
+        406:
+          description: "Not Acceptable. Je hebt waarschijnlijk een gewenst formaat\
+            \ met de `Accept` header verstuurd welke niet ondersteund wordt."
+          schema:
+            $ref: "#/definitions/Error"
+        503:
+          description: "Service Unavailable. Er vindt mogelijk (gepland) onderhoud\
+            \ of een storing plaats."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            Retry-After:
+              type: "string"
+              format: "date-time"
+              description: "Tijdstip waarop verwacht is dat de service weer beschikbaar zal zijn."
+              x-example: "Sun, 28 Nov 2017 16:41:41 GMT"
+  /percelen/{id}:
+    get:
+      tags:
+      - "Percelen"
+      summary: "Een enkele instantie van perceel opvragen"
+      parameters:
+      - $ref: '#/parameters/id'
+      responses:
+        200:
+          description: "OK."
+          schema:
+            $ref: "#/definitions/Perceel"
+        401:
+          description: "Unauthorized. Je hebt waarschijnlijk geen geldige `X-Api-Key`\
+            \ header meegestuurd."
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden. Je hebt geen rechten om deze URL te benaderen."
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found. De resource kan niet gevonden worden."
+          schema:
+            $ref: "#/definitions/Error"
+        406:
+          description: "Not Acceptable. Je hebt waarschijnlijk een gewenst formaat\
+            \ met de `Accept` header verstuurd welke niet ondersteund wordt."
+          schema:
+            $ref: "#/definitions/Error"
+        503:
+          description: "Service Unavailable. Er vindt mogelijk (gepland) onderhoud\
+            \ of een storing plaats."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            Retry-After:
+              type: "string"
+              format: "date-time"
+              description: "Tijdstip waarop verwacht is dat de service weer beschikbaar zal zijn."
+              x-example: "Sun, 28 Nov 2017 16:41:41 GMT"
+definitions:
+  Rijksmonument:
+    type: "object"
+    required:
+    - "_links"
+    - "rijksmonumentnummer"
+    properties:
+      rijksmonumentnummer:
+        type: "string"
+        example: "1"
+      naam:
+        type: "string"
+        example: "Besiendershuis"
+      registerComplexNaam:
+        type: "string"
+        example: "Besiendershuis"
+      omschrijving:
+        type: "string"
+        example: "Pand met halsgevel met gelobde afdekking (plm 1750). tstmat"
+      complexomschrijving:
+        type: "string"
+        example: "Pand met halsgevel met gelobde afdekking (plm 1750). tstmat"
+      locn:
+        type: "object"
+        properties:
+          thoroughfare:
+            type: string
+            example: "Oudezijds Achterburgwal"
+          locatorDesignator:
+            type: string
+            example: "31"
+          postCode:
+            type: string
+            example: "1012 DA"
+          postName:
+            type: string
+            example: "Amsterdam"
+      brk:
+        type: object
+        properties:
+          plaats:
+            type: string
+            example: "Amsterdam"
+          gemeente:
+            type: string
+            example: "Amsterdam"
+          provincie:
+            type: string
+            example: "NH"
+      geometrie:
+        type: object
+        allOf:
+          - $ref: "#/definitions/GeoJSON"
+      _links:
+        required:
+        - "self"
+        type: "object"
+        properties:
+          self:
+            description: Absolute link naar huidige pagina
+            required:
+            - "href"
+            - "title"
+            type: "object"
+            properties:
+              href:
+                type: "string"
+                description: URL van de link
+                example: "https://data.cultureelerfgoed.nl/api/v1/rijksmonumenten/1"
+              title:
+                type: "string"
+                description: "Voor mens leesbare titel van de link"
+                example: "Rijksmonument 1"
+          percelen:
+            description: Link naar gerelateerde percelen
+            required:
+            - "href"
+            - "title"
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                href:
+                  type: "string"
+                  description: URL van de link
+                  example: "https://data.cultureelerfgoed.nl/api/v1/percelen/10001531"
+                title:
+                  type: "string"
+                  description: "Voor mens leesbare titel van de link"
+                  example: "Perceel 7671"
+  Perceel:
+    type: "object"
+    required:
+    - "id"
+    - "_links"
+    properties:
+      id:
+        type: "string"
+        example: "10001531"
+      perceelnummer:
+        type: "string"
+        example: "7671"
+      kadastraleGemeente:
+        type: "string"
+        example: "AMSTERDAM G"
+      sectie:
+        type: "string"
+        example: "G"
+      appartement:
+        type: "string"
+        example: "6"
+      _links:
+        required:
+        - "self"
+        type: "object"
+        properties:
+          self:
+            description: Absolute link naar huidige pagina
+            required:
+            - "href"
+            - "title"
+            type: "object"
+            properties:
+              href:
+                type: "string"
+                description: URL van de link
+                example: "https://data.cultureelerfgoed.nl/api/v1/percelen/10001531"
+              title:
+                type: "string"
+                description: "Voor mens leesbare titel van de link"
+                example: "Perceel 7671"
+          rijksmonumenten:
+            description: Link naar gerelateerde rijksmonumenten
+            type: "array"
+            items:
+              type: "object"
+              required:
+              - "href"
+              - "title"              
+              properties:
+                href:
+                  type: "string"
+                  description: URL van de link
+                  example: "https://data.cultureelerfgoed.nl/api/v1/rijksmonumenten/1"
+                title:
+                  type: "string"
+                  description: "Voor mens leesbare titel van de link"
+                  example: "Rijksmonument 1"
+  GeoJSON:
+    type: "object"
+    required:
+    - "coordinates"
+    - "type"
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "Point"
+        - "Polygon"
+        - "LineString"
+        - "MultiPoint"
+        - "MultiLineString"
+        - "MultiPolygon"
+        example: "Polygon"
+      coordinates:
+        type: "array"
+        items:
+            type: string
+        description: "Array met coördinaten behorende bij dit GeoJSON object. De structuur van de array hangt af van het `type`."
+        example: [[[5.858910083770752,51.84376540294041],[5.85968255996704,51.84259879644993],[5.860852003097533,51.84413658957469],[5.858910083770752,51.84376540294041]]]
+  Error:
+    type: "object"
+    required:
+    - "detail"
+    - "instance"
+    - "status"
+    - "title"
+    - "type"
+    properties:
+      type:
+        type: "string"
+        description: "URI naar een pagina met meer informatie over deze foutmelding\
+          \ voor de ontwikkelaar."
+        default: "about:blank"
+        example: "about:blank"
+      title:
+        type: "string"
+      status:
+        type: "integer"
+        example: 404
+      detail:
+        type: "string"
+      instance:
+        type: "string"
+  CollectionLinks:
+    type: object
+    properties:
+      self:
+        required:
+        - href
+        type: object
+        description: "Absolute link naar huidige pagina"
+        properties:
+          href:
+            type: string
+            description: URL van de link
+            example: "https://data.informatiehuisruimte.nl/api/ruimtelijke-plannen/v1/_zoek"
+      next:
+        required:
+        - href
+        type: object
+        description: "Absolute link naar volgende pagina (niet aanwezig als er geen volgende pagina is)"
+        properties:
+          href:
+            type: string
+            description: URL van de link
+            example: "https://data.informatiehuisruimte.nl/api/ruimtelijke-plannen/v1/_zoek?page=2"
