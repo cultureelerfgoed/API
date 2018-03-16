@@ -9,7 +9,7 @@ produces:
 - "application/hal+json"
 - "application/problem+json"
 info:
-  version: 1.0.0
+  version: 0.1.0
   title: Cultureel Erfgoed API
   contact:
     name: Kadaster
@@ -49,7 +49,7 @@ parameters:
   id:
     name: id
     in: path
-    description: "NEN3610ID: Identificatiecode"
+    description: "Identificatiecode"
     required: true
     type: string
   page:
