@@ -1,4 +1,4 @@
-# Cultureel Erfgoed API
+# API Linked Data Voorziening RCE
 
 Deze map bevat de OpenAPI Specificatie van de Cultureel Erfgoed API.
 
