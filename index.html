@@ -1514,12 +1514,12 @@
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 0.3.2</div>
+              <div class="app-desc">Version: 0.3.3</div>
             <hr>
             <div>Linked data on cultural-historical objects. This concerns built and archaeological national monuments, findings, discovery locations, complexes, archaeological complexes, research areas, and sites.
-Access to the Linked Data API of the RCE does not require registration. Use the API in a responsible and lawful manner. Respect the applicable laws and regulations regarding the use of cultural heritage data. These terms may be changed at any time. It is your responsibility to stay informed of any changes. By using the API, you agree to these terms. For questions or concerns, please contact the Cultural Heritage Agency of the Netherlands.This API (Application Programming Interface) of the RCE offers the possibility to request data from the RCE. The following data is offered via this API:
+Access to the Linked Data API (Application Programming Interface) of the RCE does not require registration. Use the API in a responsible and lawful manner. Respect the applicable laws and regulations regarding the use of cultural heritage data. These terms may be changed at any time. It is your responsibility to stay informed of any changes. By using the API, you agree to these terms. For questions or concerns, please contact the Cultural Heritage Agency of the Netherlands.This API of the RCE offers the possibility to request data from the RCE. The following data is offered via this API:
 Rijksmonumenten, werelderfgoederen, gezichten
-The API also allows filtering on the results. Filters are applied by: municipality, province, place name, and various numbering.</div>
+. The API also allows filtering on the results. Filters are applied by: municipality, province, place name, and various numbering.</div>
           </div>
         </div>
         <div id="sections">
@@ -1558,8 +1558,8 @@ The API also allows filtering on the results. Filters are applied by: municipali
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Gezicht-findGezichtByParameters-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-gezicht/run?gezichtsnummer=&cultuurhistorischObjectnummer=&naam=&registratiedatum=&gezichtsstatus="</code></pre>
+-H "Accept: application/ld+json"\
+"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-gezicht/run?page=&pageSize=&gezichtsnummer=&cultuurhistorischObjectnummer=&naam=&registratiedatum=&gezichtsstatus="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Gezicht-findGezichtByParameters-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1575,13 +1575,15 @@ public class GezichtApiExample {
     public static void main(String[] args) {
         
         GezichtApi apiInstance = new GezichtApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String gezichtsnummer = gezichtsnummer_example; // String | City or village view number
         Integer cultuurhistorischObjectnummer = 56; // Integer | Cultural historical object number
         String naam = naam_example; // String | Name of the city or village
         date registratiedatum = 2013-10-20; // date | Registration date of the city or village view
         String gezichtsstatus = gezichtsstatus_example; // String | City or village view status
         try {
-            array[Gezicht] result = apiInstance.findGezichtByParameters(gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
+            array[Gezicht] result = apiInstance.findGezichtByParameters(page, pageSize, gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling GezichtApi#findGezichtByParameters");
@@ -1598,13 +1600,15 @@ public class GezichtApiExample {
 
     public static void main(String[] args) {
         GezichtApi apiInstance = new GezichtApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String gezichtsnummer = gezichtsnummer_example; // String | City or village view number
         Integer cultuurhistorischObjectnummer = 56; // Integer | Cultural historical object number
         String naam = naam_example; // String | Name of the city or village
         date registratiedatum = 2013-10-20; // date | Registration date of the city or village view
         String gezichtsstatus = gezichtsstatus_example; // String | City or village view status
         try {
-            array[Gezicht] result = apiInstance.findGezichtByParameters(gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
+            array[Gezicht] result = apiInstance.findGezichtByParameters(page, pageSize, gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling GezichtApi#findGezichtByParameters");
@@ -1618,7 +1622,9 @@ public class GezichtApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Gezicht-findGezichtByParameters-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *gezichtsnummer = gezichtsnummer_example; // City or village view number (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Integer *page = 56; // The page number to retrieve. (optional)
+Integer *pageSize = 56; // The number of items per page. (Fixed at 10) (optional) (default to 10)
+String *gezichtsnummer = gezichtsnummer_example; // City or village view number (optional)
 Integer *cultuurhistorischObjectnummer = 56; // Cultural historical object number (optional)
 String *naam = naam_example; // Name of the city or village (optional)
 date *registratiedatum = 2013-10-20; // Registration date of the city or village view (optional)
@@ -1627,7 +1633,9 @@ String *gezichtsstatus = gezichtsstatus_example; // City or village view status 
 GezichtApi *apiInstance = [[GezichtApi alloc] init];
 
 // Stads- en Dorpsgezichten
-[apiInstance findGezichtByParametersWith:gezichtsnummer
+[apiInstance findGezichtByParametersWith:page
+    pageSize:pageSize
+    gezichtsnummer:gezichtsnummer
     cultuurhistorischObjectnummer:cultuurhistorischObjectnummer
     naam:naam
     registratiedatum:registratiedatum
@@ -1648,6 +1656,8 @@ GezichtApi *apiInstance = [[GezichtApi alloc] init];
 
 var api = new LinkedDataApiRce.GezichtApi()
 var opts = { 
+  'page': 56, // {{Integer}} The page number to retrieve.
+  'pageSize': 56, // {{Integer}} The number of items per page. (Fixed at 10)
   'gezichtsnummer': gezichtsnummer_example, // {{String}} City or village view number
   'cultuurhistorischObjectnummer': 56, // {{Integer}} Cultural historical object number
   'naam': naam_example, // {{String}} Name of the city or village
@@ -1683,6 +1693,8 @@ namespace Example
         {
 
             var apiInstance = new GezichtApi();
+            var page = 56;  // Integer | The page number to retrieve. (optional) 
+            var pageSize = 56;  // Integer | The number of items per page. (Fixed at 10) (optional)  (default to 10)
             var gezichtsnummer = gezichtsnummer_example;  // String | City or village view number (optional) 
             var cultuurhistorischObjectnummer = 56;  // Integer | Cultural historical object number (optional) 
             var naam = naam_example;  // String | Name of the city or village (optional) 
@@ -1692,7 +1704,7 @@ namespace Example
             try
             {
                 // Stads- en Dorpsgezichten
-                array[Gezicht] result = apiInstance.findGezichtByParameters(gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
+                array[Gezicht] result = apiInstance.findGezichtByParameters(page, pageSize, gezichtsnummer, cultuurhistorischObjectnummer, naam, registratiedatum, gezichtsstatus);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -1710,6 +1722,8 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiGezichtApi();
+$page = 56; // Integer | The page number to retrieve.
+$pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
 $gezichtsnummer = gezichtsnummer_example; // String | City or village view number
 $cultuurhistorischObjectnummer = 56; // Integer | Cultural historical object number
 $naam = naam_example; // String | Name of the city or village
@@ -1717,7 +1731,7 @@ $registratiedatum = 2013-10-20; // date | Registration date of the city or villa
 $gezichtsstatus = gezichtsstatus_example; // String | City or village view status
 
 try {
-    $result = $api_instance->findGezichtByParameters($gezichtsnummer, $cultuurhistorischObjectnummer, $naam, $registratiedatum, $gezichtsstatus);
+    $result = $api_instance->findGezichtByParameters($page, $pageSize, $gezichtsnummer, $cultuurhistorischObjectnummer, $naam, $registratiedatum, $gezichtsstatus);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling GezichtApi->findGezichtByParameters: ', $e->getMessage(), PHP_EOL;
@@ -1731,6 +1745,8 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::GezichtApi;
 
 my $api_instance = WWW::SwaggerClient::GezichtApi->new();
+my $page = 56; # Integer | The page number to retrieve.
+my $pageSize = 56; # Integer | The number of items per page. (Fixed at 10)
 my $gezichtsnummer = gezichtsnummer_example; # String | City or village view number
 my $cultuurhistorischObjectnummer = 56; # Integer | Cultural historical object number
 my $naam = naam_example; # String | Name of the city or village
@@ -1738,7 +1754,7 @@ my $registratiedatum = 2013-10-20; # date | Registration date of the city or vil
 my $gezichtsstatus = gezichtsstatus_example; # String | City or village view status
 
 eval { 
-    my $result = $api_instance->findGezichtByParameters(gezichtsnummer => $gezichtsnummer, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, naam => $naam, registratiedatum => $registratiedatum, gezichtsstatus => $gezichtsstatus);
+    my $result = $api_instance->findGezichtByParameters(page => $page, pageSize => $pageSize, gezichtsnummer => $gezichtsnummer, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, naam => $naam, registratiedatum => $registratiedatum, gezichtsstatus => $gezichtsstatus);
     print Dumper($result);
 };
 if ($@) {
@@ -1755,6 +1771,8 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.GezichtApi()
+page = 56 # Integer | The page number to retrieve. (optional)
+pageSize = 56 # Integer | The number of items per page. (Fixed at 10) (optional) (default to 10)
 gezichtsnummer = gezichtsnummer_example # String | City or village view number (optional)
 cultuurhistorischObjectnummer = 56 # Integer | Cultural historical object number (optional)
 naam = naam_example # String | Name of the city or village (optional)
@@ -1763,7 +1781,7 @@ gezichtsstatus = gezichtsstatus_example # String | City or village view status (
 
 try: 
     # Stads- en Dorpsgezichten
-    api_response = api_instance.find_gezicht_by_parameters(gezichtsnummer=gezichtsnummer, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, naam=naam, registratiedatum=registratiedatum, gezichtsstatus=gezichtsstatus)
+    api_response = api_instance.find_gezicht_by_parameters(page=page, pageSize=pageSize, gezichtsnummer=gezichtsnummer, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, naam=naam, registratiedatum=registratiedatum, gezichtsstatus=gezichtsstatus)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling GezichtApi->findGezichtByParameters: %s\n" % e)</code></pre>
@@ -1782,6 +1800,44 @@ except ApiException as e:
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
+                                <tr><td style="width:150px;">page</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findGezichtByParameters_page">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The page number to retrieve.
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr><td style="width:150px;">pageSize</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findGezichtByParameters_pageSize">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The number of items per page. (Fixed at 10)
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
                                 <tr><td style="width:150px;">gezichtsnummer</td>
                                 <td>
                                 
@@ -1900,18 +1956,18 @@ except ApiException as e:
                                         var schemaWrapper = {
   "description" : "successful operation",
   "content" : {
-    "application/json" : {
+    "application/ld+json" : {
       "schema" : {
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/Gezicht"
         },
-        "x-content-type" : "application/json"
+        "x-content-type" : "application/ld+json"
       }
     }
   }
 };
-                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        var schema = schemaWrapper.content["application/ld+json"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -1935,7 +1991,31 @@ except ApiException as e:
                                 </div>
                             </div>
 
-                            <h3> Status: 400 - Invalid parameter value </h3>
+                            <h3> Status: 400 - Invalid status value </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 404 - Not found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 503 - Service Unavailable. Er vindt mogelijk (gepland) onderhoud of een storing plaats. </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 504 - Gateway Timeout. </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -1958,7 +2038,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Opvragen van informatie over rijksmonumenten.</p>
+                        <p class="marked">Requesting information about national monuments.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/rest-api-rijksmonumenten/run</span></code></pre>
@@ -1982,8 +2062,8 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Rijksmonumenten-findMonumentsByParameters-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-rijksmonumenten/run?gemeentecode=&provinciecode=&rijksmonumentnummer=&woonplaatsnaam=&cultuurhistorischObjectnummer=&monumentaard=&oorspronkelijkeFunctie=&postcode=&volledigAdres=&straat=&status="</code></pre>
+-H "Accept: application/ld+json"\
+"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-rijksmonumenten/run?page=&pageSize=&gemeentecode=&provinciecode=&rijksmonumentnummer=&woonplaatsnaam=&cultuurhistorischObjectnummer=&monumentaard=&oorspronkelijkeFunctie=&postcode=&volledigAdres=&straat=&status="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Rijksmonumenten-findMonumentsByParameters-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1999,6 +2079,8 @@ public class RijksmonumentenApiExample {
     public static void main(String[] args) {
         
         RijksmonumentenApi apiInstance = new RijksmonumentenApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String gemeentecode = gemeentecode_example; // String | Code of the municipality
         String provinciecode = provinciecode_example; // String | Code of the province
         String rijksmonumentnummer = rijksmonumentnummer_example; // String | Rijksmonument number
@@ -2011,7 +2093,7 @@ public class RijksmonumentenApiExample {
         String straat = straat_example; // String | Street name
         String status = status_example; // String | Status of the monument
         try {
-            array[Monument] result = apiInstance.findMonumentsByParameters(gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
+            array[Monument] result = apiInstance.findMonumentsByParameters(page, pageSize, gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling RijksmonumentenApi#findMonumentsByParameters");
@@ -2028,6 +2110,8 @@ public class RijksmonumentenApiExample {
 
     public static void main(String[] args) {
         RijksmonumentenApi apiInstance = new RijksmonumentenApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String gemeentecode = gemeentecode_example; // String | Code of the municipality
         String provinciecode = provinciecode_example; // String | Code of the province
         String rijksmonumentnummer = rijksmonumentnummer_example; // String | Rijksmonument number
@@ -2040,7 +2124,7 @@ public class RijksmonumentenApiExample {
         String straat = straat_example; // String | Street name
         String status = status_example; // String | Status of the monument
         try {
-            array[Monument] result = apiInstance.findMonumentsByParameters(gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
+            array[Monument] result = apiInstance.findMonumentsByParameters(page, pageSize, gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling RijksmonumentenApi#findMonumentsByParameters");
@@ -2054,7 +2138,9 @@ public class RijksmonumentenApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Rijksmonumenten-findMonumentsByParameters-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *gemeentecode = gemeentecode_example; // Code of the municipality (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Integer *page = 56; // The page number to retrieve. (optional)
+Integer *pageSize = 56; // The number of items per page. (Fixed at 10) (optional) (default to 10)
+String *gemeentecode = gemeentecode_example; // Code of the municipality (optional)
 String *provinciecode = provinciecode_example; // Code of the province (optional)
 String *rijksmonumentnummer = rijksmonumentnummer_example; // Rijksmonument number (optional)
 String *woonplaatsnaam = woonplaatsnaam_example; // Name of the residence (optional)
@@ -2069,7 +2155,9 @@ String *status = status_example; // Status of the monument (optional)
 RijksmonumentenApi *apiInstance = [[RijksmonumentenApi alloc] init];
 
 // Rijksmonumenten
-[apiInstance findMonumentsByParametersWith:gemeentecode
+[apiInstance findMonumentsByParametersWith:page
+    pageSize:pageSize
+    gemeentecode:gemeentecode
     provinciecode:provinciecode
     rijksmonumentnummer:rijksmonumentnummer
     woonplaatsnaam:woonplaatsnaam
@@ -2096,6 +2184,8 @@ RijksmonumentenApi *apiInstance = [[RijksmonumentenApi alloc] init];
 
 var api = new LinkedDataApiRce.RijksmonumentenApi()
 var opts = { 
+  'page': 56, // {{Integer}} The page number to retrieve.
+  'pageSize': 56, // {{Integer}} The number of items per page. (Fixed at 10)
   'gemeentecode': gemeentecode_example, // {{String}} Code of the municipality
   'provinciecode': provinciecode_example, // {{String}} Code of the province
   'rijksmonumentnummer': rijksmonumentnummer_example, // {{String}} Rijksmonument number
@@ -2137,6 +2227,8 @@ namespace Example
         {
 
             var apiInstance = new RijksmonumentenApi();
+            var page = 56;  // Integer | The page number to retrieve. (optional) 
+            var pageSize = 56;  // Integer | The number of items per page. (Fixed at 10) (optional)  (default to 10)
             var gemeentecode = gemeentecode_example;  // String | Code of the municipality (optional) 
             var provinciecode = provinciecode_example;  // String | Code of the province (optional) 
             var rijksmonumentnummer = rijksmonumentnummer_example;  // String | Rijksmonument number (optional) 
@@ -2152,7 +2244,7 @@ namespace Example
             try
             {
                 // Rijksmonumenten
-                array[Monument] result = apiInstance.findMonumentsByParameters(gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
+                array[Monument] result = apiInstance.findMonumentsByParameters(page, pageSize, gemeentecode, provinciecode, rijksmonumentnummer, woonplaatsnaam, cultuurhistorischObjectnummer, monumentaard, oorspronkelijkeFunctie, postcode, volledigAdres, straat, status);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -2170,6 +2262,8 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiRijksmonumentenApi();
+$page = 56; // Integer | The page number to retrieve.
+$pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
 $gemeentecode = gemeentecode_example; // String | Code of the municipality
 $provinciecode = provinciecode_example; // String | Code of the province
 $rijksmonumentnummer = rijksmonumentnummer_example; // String | Rijksmonument number
@@ -2183,7 +2277,7 @@ $straat = straat_example; // String | Street name
 $status = status_example; // String | Status of the monument
 
 try {
-    $result = $api_instance->findMonumentsByParameters($gemeentecode, $provinciecode, $rijksmonumentnummer, $woonplaatsnaam, $cultuurhistorischObjectnummer, $monumentaard, $oorspronkelijkeFunctie, $postcode, $volledigAdres, $straat, $status);
+    $result = $api_instance->findMonumentsByParameters($page, $pageSize, $gemeentecode, $provinciecode, $rijksmonumentnummer, $woonplaatsnaam, $cultuurhistorischObjectnummer, $monumentaard, $oorspronkelijkeFunctie, $postcode, $volledigAdres, $straat, $status);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling RijksmonumentenApi->findMonumentsByParameters: ', $e->getMessage(), PHP_EOL;
@@ -2197,6 +2291,8 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::RijksmonumentenApi;
 
 my $api_instance = WWW::SwaggerClient::RijksmonumentenApi->new();
+my $page = 56; # Integer | The page number to retrieve.
+my $pageSize = 56; # Integer | The number of items per page. (Fixed at 10)
 my $gemeentecode = gemeentecode_example; # String | Code of the municipality
 my $provinciecode = provinciecode_example; # String | Code of the province
 my $rijksmonumentnummer = rijksmonumentnummer_example; # String | Rijksmonument number
@@ -2210,7 +2306,7 @@ my $straat = straat_example; # String | Street name
 my $status = status_example; # String | Status of the monument
 
 eval { 
-    my $result = $api_instance->findMonumentsByParameters(gemeentecode => $gemeentecode, provinciecode => $provinciecode, rijksmonumentnummer => $rijksmonumentnummer, woonplaatsnaam => $woonplaatsnaam, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, monumentaard => $monumentaard, oorspronkelijkeFunctie => $oorspronkelijkeFunctie, postcode => $postcode, volledigAdres => $volledigAdres, straat => $straat, status => $status);
+    my $result = $api_instance->findMonumentsByParameters(page => $page, pageSize => $pageSize, gemeentecode => $gemeentecode, provinciecode => $provinciecode, rijksmonumentnummer => $rijksmonumentnummer, woonplaatsnaam => $woonplaatsnaam, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, monumentaard => $monumentaard, oorspronkelijkeFunctie => $oorspronkelijkeFunctie, postcode => $postcode, volledigAdres => $volledigAdres, straat => $straat, status => $status);
     print Dumper($result);
 };
 if ($@) {
@@ -2227,6 +2323,8 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.RijksmonumentenApi()
+page = 56 # Integer | The page number to retrieve. (optional)
+pageSize = 56 # Integer | The number of items per page. (Fixed at 10) (optional) (default to 10)
 gemeentecode = gemeentecode_example # String | Code of the municipality (optional)
 provinciecode = provinciecode_example # String | Code of the province (optional)
 rijksmonumentnummer = rijksmonumentnummer_example # String | Rijksmonument number (optional)
@@ -2241,7 +2339,7 @@ status = status_example # String | Status of the monument (optional)
 
 try: 
     # Rijksmonumenten
-    api_response = api_instance.find_monuments_by_parameters(gemeentecode=gemeentecode, provinciecode=provinciecode, rijksmonumentnummer=rijksmonumentnummer, woonplaatsnaam=woonplaatsnaam, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, monumentaard=monumentaard, oorspronkelijkeFunctie=oorspronkelijkeFunctie, postcode=postcode, volledigAdres=volledigAdres, straat=straat, status=status)
+    api_response = api_instance.find_monuments_by_parameters(page=page, pageSize=pageSize, gemeentecode=gemeentecode, provinciecode=provinciecode, rijksmonumentnummer=rijksmonumentnummer, woonplaatsnaam=woonplaatsnaam, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, monumentaard=monumentaard, oorspronkelijkeFunctie=oorspronkelijkeFunctie, postcode=postcode, volledigAdres=volledigAdres, straat=straat, status=status)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RijksmonumentenApi->findMonumentsByParameters: %s\n" % e)</code></pre>
@@ -2260,6 +2358,44 @@ except ApiException as e:
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
+                                <tr><td style="width:150px;">page</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findMonumentsByParameters_page">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The page number to retrieve.
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr><td style="width:150px;">pageSize</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findMonumentsByParameters_pageSize">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The number of items per page. (Fixed at 10)
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
                                 <tr><td style="width:150px;">gemeentecode</td>
                                 <td>
                                 
@@ -2489,13 +2625,13 @@ except ApiException as e:
                                         var schemaWrapper = {
   "description" : "Successful response",
   "content" : {
-    "application/json" : {
+    "application/ld+json" : {
       "schema" : {
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/Monument"
         },
-        "x-content-type" : "application/json"
+        "x-content-type" : "application/ld+json"
       },
       "example" : {
         "@context" : {
@@ -2715,7 +2851,7 @@ except ApiException as e:
     }
   }
 };
-                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        var schema = schemaWrapper.content["application/ld+json"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -2740,6 +2876,30 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 400 - Invalid status value </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 404 - Not found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 503 - Service Unavailable. Er vindt mogelijk (gepland) onderhoud of een storing plaats. </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 504 - Gateway Timeout. </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -2786,8 +2946,8 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Werelderfgoed-findWerelderfgoedByParameters-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-werelderfgoed/run?werelderfgoednummer=&cultuurhistorischObjectnummer=&heeftNaam=&registratiedatum=&werelderfgoedstatus="</code></pre>
+-H "Accept: application/ld+json"\
+"https://api.linkeddata.cultureelerfgoed.nl/queries/rce/rest-api-werelderfgoed/run?page=&pageSize=&werelderfgoednummer=&cultuurhistorischObjectnummer=&heeftNaam=&registratiedatum=&werelderfgoedstatus="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Werelderfgoed-findWerelderfgoedByParameters-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2803,13 +2963,15 @@ public class WerelderfgoedApiExample {
     public static void main(String[] args) {
         
         WerelderfgoedApi apiInstance = new WerelderfgoedApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String werelderfgoednummer = werelderfgoednummer_example; // String | World heritage number
         String cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example; // String | Cultural historical object number
         String heeftNaam = heeftNaam_example; // String | Name of the world heritage site
         date registratiedatum = 2013-10-20; // date | Registration date of the world heritage site
         String werelderfgoedstatus = werelderfgoedstatus_example; // String | World heritage status
         try {
-            array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
+            array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(page, pageSize, werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling WerelderfgoedApi#findWerelderfgoedByParameters");
@@ -2826,13 +2988,15 @@ public class WerelderfgoedApiExample {
 
     public static void main(String[] args) {
         WerelderfgoedApi apiInstance = new WerelderfgoedApi();
+        Integer page = 56; // Integer | The page number to retrieve.
+        Integer pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
         String werelderfgoednummer = werelderfgoednummer_example; // String | World heritage number
         String cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example; // String | Cultural historical object number
         String heeftNaam = heeftNaam_example; // String | Name of the world heritage site
         date registratiedatum = 2013-10-20; // date | Registration date of the world heritage site
         String werelderfgoedstatus = werelderfgoedstatus_example; // String | World heritage status
         try {
-            array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
+            array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(page, pageSize, werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling WerelderfgoedApi#findWerelderfgoedByParameters");
@@ -2846,7 +3010,9 @@ public class WerelderfgoedApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Werelderfgoed-findWerelderfgoedByParameters-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *werelderfgoednummer = werelderfgoednummer_example; // World heritage number (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Integer *page = 56; // The page number to retrieve. (optional)
+Integer *pageSize = 56; // The number of items per page. (Fixed at 10) (optional) (default to 10)
+String *werelderfgoednummer = werelderfgoednummer_example; // World heritage number (optional)
 String *cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example; // Cultural historical object number (optional)
 String *heeftNaam = heeftNaam_example; // Name of the world heritage site (optional)
 date *registratiedatum = 2013-10-20; // Registration date of the world heritage site (optional)
@@ -2855,7 +3021,9 @@ String *werelderfgoedstatus = werelderfgoedstatus_example; // World heritage sta
 WerelderfgoedApi *apiInstance = [[WerelderfgoedApi alloc] init];
 
 // werelderfgoed
-[apiInstance findWerelderfgoedByParametersWith:werelderfgoednummer
+[apiInstance findWerelderfgoedByParametersWith:page
+    pageSize:pageSize
+    werelderfgoednummer:werelderfgoednummer
     cultuurhistorischObjectnummer:cultuurhistorischObjectnummer
     heeftNaam:heeftNaam
     registratiedatum:registratiedatum
@@ -2876,6 +3044,8 @@ WerelderfgoedApi *apiInstance = [[WerelderfgoedApi alloc] init];
 
 var api = new LinkedDataApiRce.WerelderfgoedApi()
 var opts = { 
+  'page': 56, // {{Integer}} The page number to retrieve.
+  'pageSize': 56, // {{Integer}} The number of items per page. (Fixed at 10)
   'werelderfgoednummer': werelderfgoednummer_example, // {{String}} World heritage number
   'cultuurhistorischObjectnummer': cultuurhistorischObjectnummer_example, // {{String}} Cultural historical object number
   'heeftNaam': heeftNaam_example, // {{String}} Name of the world heritage site
@@ -2911,6 +3081,8 @@ namespace Example
         {
 
             var apiInstance = new WerelderfgoedApi();
+            var page = 56;  // Integer | The page number to retrieve. (optional) 
+            var pageSize = 56;  // Integer | The number of items per page. (Fixed at 10) (optional)  (default to 10)
             var werelderfgoednummer = werelderfgoednummer_example;  // String | World heritage number (optional) 
             var cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example;  // String | Cultural historical object number (optional) 
             var heeftNaam = heeftNaam_example;  // String | Name of the world heritage site (optional) 
@@ -2920,7 +3092,7 @@ namespace Example
             try
             {
                 // werelderfgoed
-                array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
+                array[Werelderfgoed] result = apiInstance.findWerelderfgoedByParameters(page, pageSize, werelderfgoednummer, cultuurhistorischObjectnummer, heeftNaam, registratiedatum, werelderfgoedstatus);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -2938,6 +3110,8 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiWerelderfgoedApi();
+$page = 56; // Integer | The page number to retrieve.
+$pageSize = 56; // Integer | The number of items per page. (Fixed at 10)
 $werelderfgoednummer = werelderfgoednummer_example; // String | World heritage number
 $cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example; // String | Cultural historical object number
 $heeftNaam = heeftNaam_example; // String | Name of the world heritage site
@@ -2945,7 +3119,7 @@ $registratiedatum = 2013-10-20; // date | Registration date of the world heritag
 $werelderfgoedstatus = werelderfgoedstatus_example; // String | World heritage status
 
 try {
-    $result = $api_instance->findWerelderfgoedByParameters($werelderfgoednummer, $cultuurhistorischObjectnummer, $heeftNaam, $registratiedatum, $werelderfgoedstatus);
+    $result = $api_instance->findWerelderfgoedByParameters($page, $pageSize, $werelderfgoednummer, $cultuurhistorischObjectnummer, $heeftNaam, $registratiedatum, $werelderfgoedstatus);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling WerelderfgoedApi->findWerelderfgoedByParameters: ', $e->getMessage(), PHP_EOL;
@@ -2959,6 +3133,8 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::WerelderfgoedApi;
 
 my $api_instance = WWW::SwaggerClient::WerelderfgoedApi->new();
+my $page = 56; # Integer | The page number to retrieve.
+my $pageSize = 56; # Integer | The number of items per page. (Fixed at 10)
 my $werelderfgoednummer = werelderfgoednummer_example; # String | World heritage number
 my $cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example; # String | Cultural historical object number
 my $heeftNaam = heeftNaam_example; # String | Name of the world heritage site
@@ -2966,7 +3142,7 @@ my $registratiedatum = 2013-10-20; # date | Registration date of the world herit
 my $werelderfgoedstatus = werelderfgoedstatus_example; # String | World heritage status
 
 eval { 
-    my $result = $api_instance->findWerelderfgoedByParameters(werelderfgoednummer => $werelderfgoednummer, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, heeftNaam => $heeftNaam, registratiedatum => $registratiedatum, werelderfgoedstatus => $werelderfgoedstatus);
+    my $result = $api_instance->findWerelderfgoedByParameters(page => $page, pageSize => $pageSize, werelderfgoednummer => $werelderfgoednummer, cultuurhistorischObjectnummer => $cultuurhistorischObjectnummer, heeftNaam => $heeftNaam, registratiedatum => $registratiedatum, werelderfgoedstatus => $werelderfgoedstatus);
     print Dumper($result);
 };
 if ($@) {
@@ -2983,6 +3159,8 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.WerelderfgoedApi()
+page = 56 # Integer | The page number to retrieve. (optional)
+pageSize = 56 # Integer | The number of items per page. (Fixed at 10) (optional) (default to 10)
 werelderfgoednummer = werelderfgoednummer_example # String | World heritage number (optional)
 cultuurhistorischObjectnummer = cultuurhistorischObjectnummer_example # String | Cultural historical object number (optional)
 heeftNaam = heeftNaam_example # String | Name of the world heritage site (optional)
@@ -2991,7 +3169,7 @@ werelderfgoedstatus = werelderfgoedstatus_example # String | World heritage stat
 
 try: 
     # werelderfgoed
-    api_response = api_instance.find_werelderfgoed_by_parameters(werelderfgoednummer=werelderfgoednummer, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, heeftNaam=heeftNaam, registratiedatum=registratiedatum, werelderfgoedstatus=werelderfgoedstatus)
+    api_response = api_instance.find_werelderfgoed_by_parameters(page=page, pageSize=pageSize, werelderfgoednummer=werelderfgoednummer, cultuurhistorischObjectnummer=cultuurhistorischObjectnummer, heeftNaam=heeftNaam, registratiedatum=registratiedatum, werelderfgoedstatus=werelderfgoedstatus)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling WerelderfgoedApi->findWerelderfgoedByParameters: %s\n" % e)</code></pre>
@@ -3010,6 +3188,44 @@ except ApiException as e:
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
+                                <tr><td style="width:150px;">page</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findWerelderfgoedByParameters_page">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The page number to retrieve.
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr><td style="width:150px;">pageSize</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_findWerelderfgoedByParameters_pageSize">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        The number of items per page. (Fixed at 10)
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
                                 <tr><td style="width:150px;">werelderfgoednummer</td>
                                 <td>
                                 
@@ -3128,18 +3344,18 @@ except ApiException as e:
                                         var schemaWrapper = {
   "description" : "successful operation",
   "content" : {
-    "application/json" : {
+    "application/ld+json" : {
       "schema" : {
         "type" : "array",
         "items" : {
           "$ref" : "#/components/schemas/Werelderfgoed"
         },
-        "x-content-type" : "application/json"
+        "x-content-type" : "application/ld+json"
       }
     }
   }
 };
-                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        var schema = schemaWrapper.content["application/ld+json"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -3163,7 +3379,31 @@ except ApiException as e:
                                 </div>
                             </div>
 
-                            <h3> Status: 400 - Invalid parameter value </h3>
+                            <h3> Status: 400 - Invalid status value </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 404 - Not found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 503 - Service Unavailable. Er vindt mogelijk (gepland) onderhoud of een storing plaats. </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 504 - Gateway Timeout. </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
